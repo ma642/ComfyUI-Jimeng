@@ -1,0 +1,15 @@
+[project]
+name = "jimeng"
+description = "for use jimeng ai in comfyui"
+version = "1.0.0"
+license = {file = "LICENSE"}
+dependencies = ["volcengine-python-sdk[ark]"]
+
+[project.urls]
+Repository = "https://github.com/xuhongming251/ComfyUI-Jimeng"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-Jimeng"
+Icon = ""
