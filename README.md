@@ -1,0 +1,2 @@
+# ComfyUI-Jimeng
+jimeng ai
