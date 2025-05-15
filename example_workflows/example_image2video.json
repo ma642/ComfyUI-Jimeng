@@ -1,0 +1,199 @@
+{
+  "id": "9cdfd6e3-7426-4a3a-88b1-b5866725d7e0",
+  "revision": 0,
+  "last_node_id": 36,
+  "last_link_id": 33,
+  "nodes": [
+    {
+      "id": 36,
+      "type": "PreviewVideoFromUrl",
+      "pos": [
+        1431.0086669921875,
+        476.96722412109375
+      ],
+      "size": [
+        402.0190734863281,
+        639.1795043945312
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video_url",
+          "type": "STRING",
+          "link": 33
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewVideoFromUrl"
+      },
+      "widgets_values": [
+        "tmp_preview",
+        true,
+        "mp4"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "JimengAPIClient",
+      "pos": [
+        583.7326049804688,
+        445.8818664550781
+      ],
+      "size": [
+        298.44921875,
+        67.8359375
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "client",
+          "type": "JIMENG_API_CLIENT",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "JimengAPIClient"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 2,
+      "type": "JimengImage2Video",
+      "pos": [
+        977.2882690429688,
+        500.39215087890625
+      ],
+      "size": [
+        400,
+        204
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "client",
+          "type": "JIMENG_API_CLIENT",
+          "link": 1
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "url",
+          "type": "STRING",
+          "links": [
+            33
+          ]
+        },
+        {
+          "name": "task_id",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "JimengImage2Video"
+      },
+      "widgets_values": [
+        "doubao-seedance-1-0-lite-i2v-250428",
+        "妹子开心地打招呼",
+        "5",
+        "720p",
+        true,
+        true
+      ]
+    },
+    {
+      "id": 4,
+      "type": "LoadImage",
+      "pos": [
+        570.5311279296875,
+        587.8851928710938
+      ],
+      "size": [
+        348.6527404785156,
+        483.77606201171875
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            3
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.32",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "ab202f35c980a85c4420f83f1a5f14aa.jpg",
+        "image"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "JIMENG_API_CLIENT"
+    ],
+    [
+      3,
+      4,
+      0,
+      2,
+      1,
+      "IMAGE"
+    ],
+    [
+      33,
+      2,
+      0,
+      36,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "frontendVersion": "1.18.9",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}
