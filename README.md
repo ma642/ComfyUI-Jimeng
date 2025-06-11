@@ -1,11 +1,21 @@
 # ComfyUI-Jimeng
 
-- for use jimeng ai in comfyui
+## 更新说明
 
-## jimeng3 image to video workflow:
+### 2025/6/11:
+添加即梦3.0 pro模型支持，支持图生视频节点，1分钟不到最高可生成1080p视频。
+添加即梦3.0视频模型首尾帧节点支持。
 
-![](example_workflows/example_image2video.jpg)
+## 即梦3.0 pro 节点和 首尾帧节点
+![](pronode.jpg)
 
-## API-KEY
+## 即梦3.0 图生视频工作流
 
-https://www.volcengine.com/docs/82379/1520757
+![](flowimg.png)
+
+## 邀请链接（通过邀请链接注册额外赠送算力）
+
+https://t.vncps.com/3gd5R
+
+
+ 

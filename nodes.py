@@ -5,6 +5,7 @@ import time
 import base64
 import requests
 import shutil
+import time
 
 import numpy
 import PIL
@@ -65,10 +66,10 @@ class JimengImage2Video:
             "required": {
                 "client": ("JIMENG_API_CLIENT",),
                 "image": ("IMAGE",),
-                "model": (["doubao-seedance-1-0-lite-i2v-250428"], {"default": "doubao-seedance-1-0-lite-i2v-250428"}),
+                "model": (["doubao-seedance-1-0-lite-i2v-250428", "doubao-seedance-1-0-pro-250528"], {"default": "doubao-seedance-1-0-lite-i2v-250428"}),
                 "prompt": ("STRING", {"multiline": True, "default": ""}),
                 "duration": (["5", "10"], {"default": "5"}),
-                "resolution": (["480p", "720p"], {"default": "720p"}),
+                "resolution": (["480p", "720p", "1080p"], {"default": "720p"}),
                 "camerafixed": ("BOOLEAN", {"default": True}),
             },
         }
@@ -124,6 +125,81 @@ class JimengImage2Video:
                 continue
 
         return ("", task_id)
+    
+
+class JimengFirstLastFrame2Video:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "client": ("JIMENG_API_CLIENT",),
+                "first_frame_image": ("IMAGE",),  # First frame image input
+                "last_frame_image": ("IMAGE",),   # Last frame image input, optional
+                "model": (["doubao-seedance-1-0-lite-i2v-250428"], {"default": "doubao-seedance-1-0-lite-i2v-250428"}),
+                "prompt": ("STRING", {"multiline": True, "default": ""}),
+                "duration": (["5", "10"], {"default": "5"}),
+                "resolution": (["480p", "720p"], {"default": "720p"}),
+                "camerafixed": ("BOOLEAN", {"default": True}),
+            },
+        }
+
+    RETURN_TYPES = ("STRING", "STRING")  # video_url, task_id
+    RETURN_NAMES = ("url", "task_id")
+
+    FUNCTION = "generate"
+    OUTPUT_NODE = True
+    CATEGORY = GLOBAL_CATEGORY
+
+    def generate(self,
+                 client,
+                 first_frame_image,
+                 last_frame_image,
+                 model="doubao-seedance-1-0-lite-i2v-250428",
+                 prompt="",
+                 duration="5",
+                 resolution="720p",
+                 camerafixed=True):
+
+        # Convert images to base64
+        first_frame_base64 = _image_to_base64(first_frame_image)
+        first_frame_data_url = f"data:image/jpeg;base64,{first_frame_base64}"
+        
+        last_frame_base64 = _image_to_base64(last_frame_image)
+        last_frame_data_url = f"data:image/jpeg;base64,{last_frame_base64}"
+        
+        content = [
+            {"type": "text", "text": f"{prompt} --resolution {resolution} --dur {duration} --camerafixed {'true' if camerafixed else 'false'}"},
+            {"type": "image_url", "image_url": {"url": first_frame_data_url}, "role": "first_frame"},
+            {"type": "image_url", "image_url": {"url": last_frame_data_url}, "role": "last_frame"}
+        ]
+
+        # Create task
+        try:
+            create_result = client.content_generation.tasks.create(
+                model=model,
+                content=content
+            )
+            task_id = create_result.id
+        except Exception as e:
+            raise RuntimeError(f"Create task failed: {e}")
+
+        # Query task status
+        timeout = 300 
+        interval = 5
+        for _ in range(timeout // interval):
+            time.sleep(interval)
+            try:
+                get_result = client.content_generation.tasks.get(task_id=task_id)
+                if get_result.status == "succeeded":
+                    return (get_result.content.video_url, task_id)
+                elif get_result.status in ["failed", "cancelled"]:
+                    raise RuntimeError(f"Task failed, task_id={task_id}")
+            except Exception as e:
+                print(f"Get task failed, retry continue: {e}")
+                continue
+
+        return ("", task_id)
+
 
 class PreviewVideoFromUrl:
     def __init__(self):
@@ -212,11 +288,13 @@ class PreviewVideoFromUrl:
 NODE_CLASS_MAPPINGS = {
     "JimengAPIClient": JimengAPIClient,
     "JimengImage2Video": JimengImage2Video,
+    "JimengFirstLastFrame2Video": JimengFirstLastFrame2Video,
     "PreviewVideoFromUrl": PreviewVideoFromUrl,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "JimengAPIClient": "JimengAPIClient",
     "JimengImage2Video": "JimengImage2Video",
+    "JimengFirstLastFrame2Video": "JimengFirstLastFrame2Video",
     "PreviewVideoFromUrl": "PreviewVideoFromUrl",
 }
