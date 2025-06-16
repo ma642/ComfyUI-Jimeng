@@ -212,7 +212,7 @@ class PreviewVideoFromUrl:
                 "video_url": ("STRING", {"forceInput": True}),
                 "filename_prefix": ("STRING", {"default": "tmp_preview"}),
                 "save_output": ("BOOLEAN", {"default": True}),
-                "format": (STRING, {"default": "mp4"}),
+                "format": ("STRING", {"default": "mp4"}),
             }
         }
 
