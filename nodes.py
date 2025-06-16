@@ -13,7 +13,6 @@ import PIL
 from volcenginesdkarkruntime import Ark
 
 import folder_paths
-from comfy_api.util import VideoContainer
 
 GLOBAL_CATEGORY = "JimengAI"
 
@@ -213,7 +212,7 @@ class PreviewVideoFromUrl:
                 "video_url": ("STRING", {"forceInput": True}),
                 "filename_prefix": ("STRING", {"default": "tmp_preview"}),
                 "save_output": ("BOOLEAN", {"default": True}),
-                "format": (VideoContainer.as_input(), {"default": "mp4"}),
+                "format": (STRING, {"default": "mp4"}),
             }
         }
 
@@ -247,7 +246,7 @@ class PreviewVideoFromUrl:
                     max_counter = file_counter
         counter = max_counter + 1
 
-        file_ext = VideoContainer.get_extension(format)
+        file_ext = "." + format
         final_filename = f"{filename}_{counter:05}_.{file_ext}"
         final_path = os.path.join(full_output_folder, final_filename)
 
