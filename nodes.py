@@ -216,6 +216,9 @@ class PreviewVideoFromUrl:
             }
         }
 
+    RETURN_TYPES = ("STRING")  # video_url, task_id
+    RETURN_NAMES = ("url")
+
     OUTPUT_NODE = True
     FUNCTION = "run"
     CATEGORY = "image/video"
@@ -225,7 +228,8 @@ class PreviewVideoFromUrl:
 
     def run(self, video_url, filename_prefix, save_output, format):
         if not video_url or not save_output:
-            return {"ui": {"video_url": [video_url]}, "result": ('', )}
+            #return {"ui": {"video_url": [video_url]}, "result": ('', )}
+            return ""
 
         output_dir = self.output_dir
         (
@@ -270,18 +274,19 @@ class PreviewVideoFromUrl:
             except Exception as e:
                 raise RuntimeError(f"failed to copy video file to output path: {final_path}, {e}, ")
 
-        results = [{
-            "filename": final_filename,
-            "subfolder": subfolder,
-            "type": self.type
-        }]
+        return final_filename
+#         results = [{
+#             "filename": final_filename,
+#             "subfolder": subfolder,
+#             "type": self.type
+#         }]
 
-        return {
-            "ui": {
-                "images": results,
-                "animated": (True,)
-            }
-        }
+#         return {
+#             "ui": {
+#                 "images": results,
+#                 "animated": (True,)
+#             }
+#         }
 
 
 NODE_CLASS_MAPPINGS = {
