@@ -65,7 +65,7 @@ class JimengImage2Video:
             "required": {
                 "client": ("JIMENG_API_CLIENT",),
                 "image": ("IMAGE",),
-                "model": (["doubao-seedance-1-0-lite-i2v-250428", "doubao-seedance-1-0-pro-250528", "wan2-1-14b-i2v-250225"], {"default": "doubao-seedance-1-0-lite-i2v-250428"}),
+                "model": (["doubao-seedance-1-0-lite-i2v-250428", "doubao-seedance-1-0-pro-250528", "wan2-1-14b-i2v-250225", "doubao-seaweed-241128"], {"default": "doubao-seedance-1-0-lite-i2v-250428"}),
                 "prompt": ("STRING", {"multiline": True, "default": ""}),
                 "duration": (["5", "10"], {"default": "5"}),
                 "resolution": (["480p", "720p", "1080p"], {"default": "720p"}),
